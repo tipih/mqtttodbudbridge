@@ -39,7 +39,7 @@
         <property name="PlaybackStatus" type="s" access="read" />
         <property name="LoopStatus" type="s" access="readwrite" />
         <property name="Volume" type="d" access="readwrite" />
-        <property name="Shuffle" type="d" access="readwrite" />
+        <property name="Shuffle" type="b" access="readwrite" />
         <property name="Position" type="i" access="read" />
         <property name="Rate" type="d" access="readwrite" />
         <property name="MinimumRate" type="d" access="readwrite" />
@@ -70,7 +70,7 @@
           <method name="GetTracksMetadata">
             <arg type="ao" direction="in" />
             <arg type="aa{sv}" direction="out" />
-            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="QList&lt;QVariantMap&gt;" />
           </method>
           <method name="AddTrack">
             <arg type="s" direction="in" />

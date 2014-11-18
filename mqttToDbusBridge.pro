@@ -33,7 +33,8 @@ HEADERS += \
     mqtt_strings_c.h \
     imagetobase64.h \
     mediaModalityController.h \
-    tracklisttojsonstring.h
+    tracklisttojsonstring.h \
+    meta.h
 
 
 

@@ -9,9 +9,13 @@
 #include <QList>
 
 
+
+
+
 class MediaModalityController : public QObject
 {
     Q_OBJECT
+
 public:
     explicit MediaModalityController(QObject *parent = 0);
     QDBusInterface *iface;
@@ -27,19 +31,27 @@ signals:
     void setAlbumArt(QString);
     void setTrackId(QString);
     void setTrackList(QString);
+    void setVolume(QString);
+    void setShuffle(QString);
+    void setLoopStatus(QString);
+    void setPlaybackStatus(QString);
 
 private slots:
     void quit();
     void on_TrackAdded(QVariantMap,QDBusObjectPath);
     void on_propertyChange(QString,QVariantMap,QStringList);
     void on_seeked(qlonglong position);
+    void init();
 
 public slots:
     void play();
     void pause();
     void previous();
     void next();
-    void Volume(double mVolume);
+    void setVolume(double mVolume);
+    void playId(QDBusObjectPath);
+    void playPause();
+    void mix(bool);
 
 private:
     org::mpris::MediaPlayer2::Player *musicPlayer2PlayerProxy;
@@ -47,8 +59,13 @@ private:
     org::freedesktop::DBus::Properties *musicPlayer2property;
     void timerEvent(QTimerEvent *event);
     Metadata getMetadata(QVariant);
-    QStringList getTracklist();
+    QList<QDBusObjectPath> getTracklist();
     void sendMetadataUpdate(Metadata);
+    void getCurrentPlaylist();
+    QString convertTrackLenght(QString);    //converting to milisec
+    QString convertTrackPosition(QString);  //converting to milisec
+    QString convertLoopStatus(QString);
+    QString converPlackbackStatus(QString);
     QStringList _trackList;
 
     bool isSet;

@@ -5,12 +5,15 @@
 #include <imagetobase64.h>
 #include <QList>
 #include <tracklisttojsonstring.h>
+#include <meta.h>
+
 
 
 MediaModalityController::MediaModalityController(QObject *parent) :
     QObject(parent)
 {
 
+    qDBusRegisterMetaType<TrackMetadata>();
     musicPlayer2PlayerProxy = new org::mpris::MediaPlayer2::Player("org.mpris.MediaPlayer2.vlc", "/org/mpris/MediaPlayer2",
                                                                     QDBusConnection::sessionBus(), this);
 
@@ -24,15 +27,34 @@ MediaModalityController::MediaModalityController(QObject *parent) :
     qDebug()<<"Signal Track added connected" <<connect(musicPlayer2TracklistProxy,SIGNAL(TrackAdded(QVariantMap,QDBusObjectPath)),this,SLOT(on_TrackAdded(QVariantMap,QDBusObjectPath)));
     qDebug()<<"Signal PropertiesChanged connected"<<connect(musicPlayer2property,SIGNAL(PropertiesChanged(QString,QVariantMap,QStringList)),this,SLOT(on_propertyChange(QString,QVariantMap,QStringList)));
     qDebug()<<"Signal Seeked connected"<<connect(musicPlayer2PlayerProxy,SIGNAL(Seeked(qlonglong)),this,SLOT(on_seeked(qlonglong)));
+
     //Flag used only for debugging, to prevent from printing out more
     //than one time
     isSet=true;
-
+    QTimer::singleShot(100, this, SLOT(init())); //Do to error in VLC mpris on playlist we do this to get it, if there are any
 }
 void MediaModalityController::on_seeked(qlonglong position){
-    qDebug()<<"Seeked "<<position;
+    emit (setPosition(QString::number(position/1000)));
 }
 
+void MediaModalityController::init(){
+getCurrentPlaylist(); //Get the playlist, and after that get the metadata for all elements
+
+QDBusPendingReply<QDBusVariant> volume = musicPlayer2property->Get(musicPlayer2PlayerProxy->interface(),"Volume");
+volume.waitForFinished();
+
+    if (volume.isError())
+        // call failed. Show an error condition.
+        volume.error();
+    else
+        // use the returned value
+    {
+    QDBusVariant data = volume.value();
+    QString _volume = QString::number(data.variant().toDouble()*100);
+    emit (setVolume(_volume));
+    }
+
+}
 
 void MediaModalityController::timerEvent(QTimerEvent *event)
 {
@@ -53,7 +75,8 @@ void MediaModalityController::timerEvent(QTimerEvent *event)
                 // use the returned value
             {
             QDBusVariant data = position.value();
-            //qDebug()<<data.variant();
+            QString _position = QString::number(data.variant().toLongLong()/1000);
+            emit (setPosition(_position));
             }
 
     }
@@ -77,34 +100,127 @@ Q_UNUSED(list1);
 
 
 
-    if(str1==musicPlayer2PlayerProxy->interface())
+    if(str1==musicPlayer2PlayerProxy->interface()) //Check what interface the property change accured on
     {
 
         //qDebug()<<"property change Variant "<<variant1;
         for(QVariantMap::const_iterator iter = variant1.begin(); iter != variant1.end(); ++iter) {
-        qDebug() << iter.key() << iter.value();
+
             if (iter.key()== "Metadata"){
                 sendMetadataUpdate(getMetadata(iter.value()));
 
                 //TODO call helper function to send the updated meta data to mqtt using the plinta protecol
+                getCurrentPlaylist();
             }
+            else if (iter.key()=="Position"){
+                emit (setPosition(iter.value().toString()));
+            }
+            else if (iter.key()=="Volume"){
+                emit (setVolume(QString::number(iter.value().toFloat()*100)));
+            }
+            else if (iter.key()=="Shuffle"){
+                emit (setShuffle(QString::number(iter.value().toInt())));
+            }
+            else if (iter.key()=="LoopStatus"){
+                emit (setLoopStatus(convertLoopStatus(iter.value().toString())));
+            }
+            else if (iter.key()=="PlaybackStatus"){
+                emit (setPlaybackStatus(converPlackbackStatus(iter.value().toString())));
+            }
+
+
             else if(iter.key()==""){
 
             }
+
        }
     }
     else if(str1==musicPlayer2TracklistProxy->interface()){
 
         //qDebug()<<"property change Variant "<<variant1;
-        QStringList trackList=MediaModalityController::getTracklist();
-        emit setTrackList(TrackListToJsonString::encodeToJason(trackList));
+        QList<QDBusObjectPath> trackListObjectPath = MediaModalityController::getTracklist();
 
-    }
+        QDBusPendingReply<TrackMetadata> metadatalist = musicPlayer2TracklistProxy->GetTracksMetadata(trackListObjectPath);
+        metadatalist.waitForFinished();
+        if (metadatalist.isError()){
+                    // call failed. Show an error condition.
+                    qDebug()<<"Something is wrong";
+                 }
+        TrackMetadata metaList = metadatalist.value();
+        QVariantMap metadata;
+
+        TrackListToJsonString::trackSet trackset;
+        TrackListToJsonString::clearTrackList();
+
+        trackset.album="Unknown";
+        trackset.title="Unknown";
+        trackset.id="";
+
+        for (int i = 0; i < metaList.size(); ++i) {
+                metadata = metaList.at(i);
+                for(QVariantMap::const_iterator iter = metadata.begin(); iter != metadata.end(); ++iter) {
+
+                if (iter.key()== "xesam:album"){
+                    trackset.album=iter.value().toString();
+                 }
+                 else if (iter.key()== "xesam:title"){
+                    trackset.title=iter.value().toString();
+                 }
+                 else if (iter.key()== "mpris:trackid"){
+                    const QDBusObjectPath _path = qvariant_cast<QDBusObjectPath>(iter.value());
+                    trackset.id=_path.path();
+                 }
+               }
+               TrackListToJsonString::addToTrackList(trackset);
+
+         }
+        emit(setTrackList(TrackListToJsonString::getTrackList()));
+   }
+}
+
+void MediaModalityController::getCurrentPlaylist(){
+    QList<QDBusObjectPath> trackListObjectPath = MediaModalityController::getTracklist();
+    QDBusPendingReply<TrackMetadata> metadatalist = musicPlayer2TracklistProxy->GetTracksMetadata(trackListObjectPath);
+    metadatalist.waitForFinished();
+    if (metadatalist.isError()){
+                // call failed. Show an error condition.
+                qDebug()<<"Something is wrong";
+             }
+    TrackMetadata metaList = metadatalist.value();
+    QVariantMap metadata;
+
+    TrackListToJsonString::trackSet trackset;
+    TrackListToJsonString::clearTrackList();
+
+    trackset.album="Unknown";
+    trackset.title="Unknown";
+    trackset.id="";
+
+    for (int i = 0; i < metaList.size(); ++i) {
+            metadata = metaList.at(i);
+            for(QVariantMap::const_iterator iter = metadata.begin(); iter != metadata.end(); ++iter) {
+
+            if (iter.key()== "xesam:album"){
+                trackset.album=iter.value().toString();
+             }
+             else if (iter.key()== "xesam:title"){
+                trackset.title=iter.value().toString();
+             }
+             else if (iter.key()== "mpris:trackid"){
+                const QDBusObjectPath _path = qvariant_cast<QDBusObjectPath>(iter.value());
+                trackset.id=_path.path();
+             }
+           }
+           TrackListToJsonString::addToTrackList(trackset);
+
+     }
+    emit(setTrackList(TrackListToJsonString::getTrackList()));
 }
 
 
-QStringList MediaModalityController::getTracklist(){
-    QStringList test;
+QList<QDBusObjectPath> MediaModalityController::getTracklist(){
+
+    QList<QDBusObjectPath> _trackList;
 
     QDBusPendingReply<QDBusVariant> TrackList = musicPlayer2property->Get(musicPlayer2TracklistProxy->interface(),"Tracks");
     TrackList.waitForFinished();
@@ -116,19 +232,16 @@ QStringList MediaModalityController::getTracklist(){
         {    // use the returned value
 
        QDBusVariant argumentList=TrackList.value();
-
-       qDebug()<<"Stuff "<<argumentList.variant();
-
        const QDBusArgument &optionsArgument = qvariant_cast<QDBusArgument>(argumentList.variant());
-       qDebug()<<"Type "<<optionsArgument.currentType();
 
        if(optionsArgument.currentType()==QDBusArgument::ArrayType)
             {
             _trackList.clear();
             optionsArgument.beginArray();
-            QString element;
+            QDBusObjectPath element;
             while ( !optionsArgument.atEnd() ) {
              optionsArgument >> element;
+
              _trackList.append(element);
              }
             optionsArgument.endArray();
@@ -164,7 +277,6 @@ MediaModalityController::Metadata MediaModalityController::getMetadata(QVariant 
     QVariant value;
             optionsArgument.beginMapEntry();
                 optionsArgument >> key >> value;
-                //qDebug()<<"Key "<<key<<" Value "<<value;
                 _metadata.insert(key,value.toString());
             optionsArgument.endMapEntry();
         }
@@ -199,7 +311,7 @@ void MediaModalityController::sendMetadataUpdate(Metadata data){
       emit setTitle(data.value("xesam:title"));
     }
     if(data.value("mpris:length")!=""){
-      emit setLength(data.value("mpris:length"));
+      emit setLength(convertTrackLenght(data.value("mpris:length")));
     }
     if(data.value("mpris:trackid")!=""){
       emit setLength(data.value("mpris:trackid"));
@@ -211,6 +323,20 @@ void MediaModalityController::sendMetadataUpdate(Metadata data){
 void MediaModalityController::play(){
     qDebug()<<"Signal dBus service to PLAY";
     musicPlayer2PlayerProxy->Play();
+}
+
+void MediaModalityController::playId(QDBusObjectPath path){
+    musicPlayer2TracklistProxy->GoTo(path);
+}
+
+void MediaModalityController::playPause(){
+    musicPlayer2PlayerProxy->PlayPause();
+}
+
+void MediaModalityController::mix(bool mixstatus){
+
+     musicPlayer2PlayerProxy->setShuffle(mixstatus);
+
 }
 
 void MediaModalityController::pause(){
@@ -228,8 +354,60 @@ void MediaModalityController::next(){
     musicPlayer2PlayerProxy->Next();
 }
 
-void MediaModalityController::Volume(double mVolume){
+void MediaModalityController::setVolume(double mVolume){
     qDebug()<<"Signal dBus service to SET VOLUME TO "<<mVolume;
     musicPlayer2PlayerProxy->setVolume(mVolume);
 }
 //************************************************
+
+//************************************************
+//Helper functions
+QString MediaModalityController::convertTrackLenght(QString tracklenght){
+    bool ok;
+    qlonglong _lenght = tracklenght.toLongLong(&ok,10);
+    if (!ok){
+        return "0";
+    }
+
+    _lenght = _lenght / 1000; //Convert to milisec
+
+    return QString::number(_lenght);
+}
+
+QString MediaModalityController::convertTrackPosition(QString trackposition){
+    bool ok;
+    qlonglong _position = trackposition.toLongLong(&ok,10);
+    if (!ok){
+        return "0"; //If error in convertion return a 0, doing development we should make a exception
+    }
+
+    _position = _position / 1000; //Convert to milisec
+
+    return QString::number(_position);
+}
+
+QString MediaModalityController::convertLoopStatus(QString loopstatus){
+   QString _status;
+   _status="0"; //default 0=none
+    if (loopstatus=="None")
+        _status = "0";
+    else if (loopstatus=="Playlist")
+        _status="1";
+    else if (loopstatus=="Track")
+        _status="2";
+
+ return _status;
+
+}
+
+QString MediaModalityController::converPlackbackStatus(QString playbackstatus){
+    QString _playbackstatus="stopped";
+    if(playbackstatus=="Playing")
+        _playbackstatus="playing";
+    else if (playbackstatus=="Stopped")
+        _playbackstatus="stopped";
+    else if (playbackstatus=="Paused")
+        _playbackstatus="paused";
+
+    return _playbackstatus;
+}

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <qmqtt.h>
+#include <QDBusObjectPath>
 class MqttBridge : public QObject
 {
     Q_OBJECT
@@ -12,6 +13,9 @@ class MqttBridge : public QObject
     explicit MqttBridge(QObject *parent = 0);
     QMQTT::Client *client;
 
+private:
+    int getMessageId();
+    int _messageId;
 
 signals:
     void setPlay();
@@ -19,6 +23,10 @@ signals:
     void setPrevious();
     void setNext();
     void setVolume(double mVolume);
+    void setPlayId(QDBusObjectPath);
+    void setPlayPause();
+    void setShuffle(bool);
+    void setLoop(QString);
 
 private slots:
     void error(QAbstractSocket::SocketError);
@@ -39,6 +47,10 @@ public slots:
     void setAlbumArt(QString);
     void setTrackId(QString);
     void setTrackList(QString);
+    void setVolume(QString);
+    void setShuffle(QString);
+    void setLoopStatus(QString);
+    void setPlaybackStatus(QString);
 
 
 };

@@ -10,7 +10,8 @@ MqttBridge::MqttBridge(QObject *parent) :
     QObject(parent)
 {
 qDebug()<<"Initilization of the mqtt client";
-client = new QMQTT::Client("localhost",1883);
+_messageId=0;
+client = new QMQTT::Client("192.168.1.24",1883);
 
 connect(client,SIGNAL(connected()),this,SLOT(connected()));
 connect(client,SIGNAL(subscribed(QString)),this,SLOT(subscribed(QString)));
@@ -48,6 +49,9 @@ client->subscribe(mediaVolumeCommand,0);
 client->subscribe(mediaNextCommand,0);
 client->subscribe(mediaPrevCommand,0);
 client->subscribe(mediaPlayPauseCommand,0);
+client->subscribe(mediaPlayIdCommand,0);
+client->subscribe(mediaMixCommand,0);
+client->subscribe(mediaRepeatCommand,0);
 }
 
 void MqttBridge::received(const QMQTT::Message &message){
@@ -59,11 +63,23 @@ void MqttBridge::received(const QMQTT::Message &message){
     if      (message.topic()==mediaPlayCommand) emit setPlay();
     else if (message.topic()==mediaNextCommand) emit setNext();
     else if (message.topic()==mediaPrevCommand) emit setPrevious();
-    else if (message.topic()==mediaPlayPauseCommand) emit setPause();
     else if (message.topic()==mediaVolumeCommand) {
-        double volume = message.payload().toDouble();
+        double volume = message.payload().toDouble()/100;
         emit setVolume(volume);
         }
+    else if (message.topic()==mediaPlayIdCommand) {
+     QDBusObjectPath _path;
+     _path.setPath(message.payload());
+     emit setPlayId(_path);
+    }
+    else if (message.topic()==mediaPlayPauseCommand) emit setPlayPause();
+    else if (message.topic()==mediaRepeatCommand){
+
+    }
+    else if (message.topic()==mediaMixCommand){
+     if (message.payload()=="0") emit setShuffle(false);
+     else emit setShuffle(true);
+    }
 
 
 
@@ -78,7 +94,7 @@ void MqttBridge::disconnected(){
 }
 
 void MqttBridge::published(QMQTT::Message &message){
-    qDebug()<<"Published message "<<message.payload();
+    qDebug()<<"Published message "<<message.payload()<<" ID"<<message.id();
 }
 
 void MqttBridge::subscribed(const QString &topic){
@@ -87,30 +103,39 @@ void MqttBridge::subscribed(const QString &topic){
 
 //Public slot functions
 void MqttBridge::setAlbum(QString album){
-    QMQTT::Message *message = new QMQTT::Message(10,mediaAlbumData,album.toStdString().c_str());
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaAlbumData,album.toStdString().c_str(),0,true);
 
     client->publish(*message);
 
 }
 
-void MqttBridge::setArtist(QString){
+void MqttBridge::setArtist(QString artist){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaArtistData,artist.toStdString().c_str(),0,true);
 
+    client->publish(*message);
 }
 
-void MqttBridge::setTitle(QString){
+void MqttBridge::setTitle(QString title){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaTitleData,title.toStdString().c_str(),0,true);
 
+    client->publish(*message);
 }
 
-void MqttBridge::setLength(QString){
+void MqttBridge::setLength(QString length){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaLengthData,length.toStdString().c_str(),0,true);
 
+    client->publish(*message);
 }
 
-void MqttBridge::setPosition(QString){
+void MqttBridge::setPosition(QString position){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaPositionData,position.toStdString().c_str());
+
+    client->publish(*message);
 
 }
 
 void MqttBridge::setAlbumArt(QString art){
-    QMQTT::Message *message = new QMQTT::Message(10,mediaAlbumArtData,art.toStdString().c_str());
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaAlbumArtData,art.toStdString().c_str(),0,true);
 
     client->publish(*message);
 }
@@ -119,6 +144,39 @@ void MqttBridge::setTrackId(QString){
 
 }
 
-void MqttBridge::setTrackList(QString){
+void MqttBridge::setTrackList(QString metadatatracklist){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaLibraryListData,metadatatracklist.toStdString().c_str(),0,true);
 
+    client->publish(*message);
+}
+
+void MqttBridge::setVolume(QString volume){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaVolumeData,volume.toStdString().c_str(),0,true);
+
+    client->publish(*message);
+}
+
+void MqttBridge::setShuffle(QString shuffle){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaMixData,shuffle.toStdString().c_str(),0,true);
+
+    client->publish(*message);
+}
+
+void MqttBridge::setLoopStatus(QString loopstatus){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaRepeatData,loopstatus.toStdString().c_str(),0,true);
+
+    client->publish(*message);
+}
+
+void MqttBridge::setPlaybackStatus(QString playbackstatus){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaStateData,playbackstatus.toStdString().c_str(),0,true);
+
+    client->publish(*message);
+}
+
+//******************************************************
+//Helper function
+
+int MqttBridge::getMessageId(){
+   return _messageId++;
 }
