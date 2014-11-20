@@ -51,6 +51,7 @@ public slots:
     void setShuffle(QString);
     void setLoopStatus(QString);
     void setPlaybackStatus(QString);
+    void setError(QString);
 
 
 };

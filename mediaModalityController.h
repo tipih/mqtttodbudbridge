@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <mpreis_interface.h>
 #include <QList>
+#include "meta.h"
 
 
 
@@ -20,7 +21,7 @@ public:
     explicit MediaModalityController(QObject *parent = 0);
     QDBusInterface *iface;
     QFile qstdin;
-    typedef QMap<QString,QString> Metadata;
+
 
 signals:
     void setAlbum(QString);
@@ -35,6 +36,7 @@ signals:
     void setShuffle(QString);
     void setLoopStatus(QString);
     void setPlaybackStatus(QString);
+    void setError(QString);
 
 private slots:
     void quit();
@@ -58,7 +60,7 @@ private:
     org::mpris::MediaPlayer2::TrackList *musicPlayer2TracklistProxy;
     org::freedesktop::DBus::Properties *musicPlayer2property;
     void timerEvent(QTimerEvent *event);
-    Metadata getMetadata(QVariant);
+
     QList<QDBusObjectPath> getTracklist();
     void sendMetadataUpdate(Metadata);
     void getCurrentPlaylist();

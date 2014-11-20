@@ -11,7 +11,7 @@ MqttBridge::MqttBridge(QObject *parent) :
 {
 qDebug()<<"Initilization of the mqtt client";
 _messageId=0;
-client = new QMQTT::Client("192.168.1.24",1883);
+client = new QMQTT::Client("localhost",1883);
 
 connect(client,SIGNAL(connected()),this,SLOT(connected()));
 connect(client,SIGNAL(subscribed(QString)),this,SLOT(subscribed(QString)));
@@ -170,6 +170,12 @@ void MqttBridge::setLoopStatus(QString loopstatus){
 
 void MqttBridge::setPlaybackStatus(QString playbackstatus){
     QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaStateData,playbackstatus.toStdString().c_str(),0,true);
+
+    client->publish(*message);
+}
+
+void MqttBridge::setError(QString error){
+    QMQTT::Message *message = new QMQTT::Message(getMessageId(),"data/mediaservice/error",error.toStdString().c_str(),0,true);
 
     client->publish(*message);
 }

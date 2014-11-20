@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
     qDebug()<<"Connecting signal LoopStatus"<< QObject::connect(MediaControllerService,SIGNAL(setLoopStatus(QString)),mqttService,SLOT(setLoopStatus(QString)));
     qDebug()<<"Connecting signal PlaybackStatus"<< QObject::connect(MediaControllerService,SIGNAL(setPlaybackStatus(QString)),mqttService,SLOT(setPlaybackStatus(QString)));
     qDebug()<<"Connecting signal setTrackList"<< QObject::connect(MediaControllerService,SIGNAL(setTrackList(QString)),mqttService,SLOT(setTrackList(QString)));
+    qDebug()<<"Connecting signal error"<< QObject::connect(MediaControllerService,SIGNAL(setError(QString)),mqttService,SLOT(setError(QString)));
+
 
 
 

@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     mqttbridge.cpp \
     imagetobase64.cpp \
     mediaModalityController.cpp \
-    tracklisttojsonstring.cpp
+    tracklisttojsonstring.cpp \
+    metadata.cpp
 
 HEADERS += \
     libraries/qmqtt.h \
@@ -34,7 +35,8 @@ HEADERS += \
     imagetobase64.h \
     mediaModalityController.h \
     tracklisttojsonstring.h \
-    meta.h
+    meta.h \
+    metadata.h
 
 
 
