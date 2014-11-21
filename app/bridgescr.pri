@@ -1,25 +1,12 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2014-11-06T07:31:29
-#
-#-------------------------------------------------
-
 QT       += core
 QT       += dbus
 QT       += network
 
 QT       -= gui
+
 DBUS_INTERFACES += mpreis.xml
 
-TARGET = mqttToDbusBridge
-CONFIG   += console
-CONFIG   -= app_bundle
-
-TEMPLATE = app
-
-
-SOURCES += main.cpp \
-    mqttbridge.cpp \
+SOURCES += mqttbridge.cpp \
     imagetobase64.cpp \
     mediaModalityController.cpp \
     tracklisttojsonstring.cpp \
@@ -37,13 +24,3 @@ HEADERS += \
     tracklisttojsonstring.h \
     meta.h \
     metadata.h
-
-
-
-unix:!macx: LIBS += -L$$PWD/libraries/ -lqmqtt
-
-INCLUDEPATH += $$PWD/libraries
-DEPENDPATH += $$PWD/libraries
-
-OTHER_FILES += \
-    mpreis.xml

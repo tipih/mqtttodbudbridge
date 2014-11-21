@@ -189,7 +189,6 @@ QList<QDBusObjectPath> MediaModalityController::getTracklist(){
     if (TrackList.isError()){
         // call failed. Show an error condition.
         TrackList.error();
-
     }
     else{
         _trackList = MetaData::getTracklist(TrackList);
