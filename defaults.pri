@@ -1,4 +1,4 @@
-
+DBUS_INTERFACES += ../src/mpreis.xml
 
 
 INCLUDEPATH += $$PWD/src

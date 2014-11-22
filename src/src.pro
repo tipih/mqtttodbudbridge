@@ -5,11 +5,7 @@ QT += dbus
 QT += network
 QT -= gui
 
-DBUS_INTERFACES += mpreis.xml
-
-
 TARGET = myapp
-
 TEMPLATE = lib
 
 
