@@ -94,7 +94,7 @@ void MqttBridge::disconnected(){
 }
 
 void MqttBridge::published(QMQTT::Message &message){
-    qDebug()<<"Published message "<<message.payload()<<" ID"<<message.id();
+   // qDebug()<<"Published message "<<message.payload()<<" ID"<<message.id();
 }
 
 void MqttBridge::subscribed(const QString &topic){

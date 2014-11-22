@@ -39,3 +39,14 @@ DEPENDPATH += $$PWD/libraries
 
 OTHER_FILES += \
     mpreis.xml
+
+unix:!symbian {
+    maemo5 {
+        target.path = /opt/usr/lib
+    } else {
+        target.path = /usr/lib
+    }
+
+    INSTALLS += target
+
+}
