@@ -1,5 +1,6 @@
 #include <QString>
 #include <QtTest>
+#include "imagetobase64.h"
 
 class MqttTestTest : public QObject
 {
@@ -10,12 +11,16 @@ public:
 
 private Q_SLOTS:
     void initTestCase();
+    void testimageConvert();
     void cleanupTestCase();
-    void testCase1();
+
+
 };
 
 MqttTestTest::MqttTestTest()
 {
+
+
 }
 
 void MqttTestTest::initTestCase()
@@ -26,9 +31,14 @@ void MqttTestTest::cleanupTestCase()
 {
 }
 
-void MqttTestTest::testCase1()
+void MqttTestTest::testimageConvert()
 {
-    QVERIFY2(true, "Failure");
+    QImage testImage(":/image/testData/1.jpg");
+
+    QString imageString;
+    bool test1 = ImageToBase64::convertImage(":/image/testData/1.jpg",imageString);
+
+    QCOMPARE(test1,true);
 }
 
 QTEST_APPLESS_MAIN(MqttTestTest)
