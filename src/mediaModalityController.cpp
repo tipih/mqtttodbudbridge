@@ -216,7 +216,7 @@ void MediaModalityController::sendMetadataUpdate(Metadata data){
     if (oldString!=data.value("mpris:artUrl"))
     {
         if(!ImageToBase64::convertImage(data.value("mpris:artUrl"),albumArtString)){
-            qDebug()<<"Error in sending album art "<<ImageToBase64::getLastError();
+            qDebug()<<"Error in sending album art ";
         }
         else{
             emit setAlbumArt(albumArtString);

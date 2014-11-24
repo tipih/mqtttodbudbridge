@@ -3,7 +3,7 @@ include(../defaults.pri)
 QT += core
 QT += dbus
 QT += network
-QT -= gui
+QT += gui
 
 TARGET = myapp
 TEMPLATE = lib
