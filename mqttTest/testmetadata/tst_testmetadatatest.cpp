@@ -92,6 +92,12 @@ void TestmetadataTest::testCase1()
 
     qDebug()<<mArg.currentSignature();
 
+
+    QDBusArgument *_Test= new QDBusArgument(mArg);
+    qDebug() <<_Test->currentSignature();
+    qDebug() <<_Test->asVariant();
+
+
     Metadata _metadata;
     _metadata.clear();
 

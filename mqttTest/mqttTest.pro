@@ -2,7 +2,8 @@ TEMPLATE = subdirs
 CONFIG+=ordered
 SUBDIRS = \
     testimagetobase64 \
-    testmetadata
+    testmetadata \
+    testtracklistclass
    
 
 app.depends = src

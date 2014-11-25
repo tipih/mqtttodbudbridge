@@ -6,6 +6,14 @@ MetaData::MetaData()
 
 }
 
+//Public functions
+
+
+//Function getMetadata
+//Overload function taking in a QVariant containing a
+//QDBusArgument.
+//Function will return  QMap<QString,QString>
+//Coorosponding to a DBus signature a{ss}
 Metadata MetaData::getMetadata(QVariant value){
     Metadata _metadata;
     _metadata.clear();
@@ -24,6 +32,11 @@ Metadata MetaData::getMetadata(QVariant value){
     return _metadata;
 }
 
+
+//Function getMetadata
+//This function will process a reply from the DBus and return the metadata
+//The metadata looks like this QMap<QString,QString> mapping data comming
+//from DBus
 Metadata MetaData::getMetadata(QDBusPendingReply<QDBusVariant> TrackList){
     Metadata _metadata;
     _metadata.clear();
@@ -42,7 +55,10 @@ Metadata MetaData::getMetadata(QDBusPendingReply<QDBusVariant> TrackList){
 }
 
 
-
+//function getTrackSet
+//This function will convert a DBus reply containing a QList<QVariantMap>
+//This is the dataset coorespond to DBus signature aa{sv}
+//it will return a string containint all the Data formattet as a jsonstring
 QString MetaData::getTrackSet(QDBusPendingReply<TrackMetadata>metadatalist)
 {
 
@@ -52,8 +68,12 @@ QString MetaData::getTrackSet(QDBusPendingReply<TrackMetadata>metadatalist)
     return tracklist;
 }
 
-QList<QDBusObjectPath> MetaData::getTracklist(QDBusPendingReply<QDBusVariant>TrackList){
 
+//function getTracklist
+//This function will conver a QDBusArgument containing a arraytype
+//it will extract data and return it in a QList<QDBusObjectPath>
+//coorespond to a DBus to ao
+QList<QDBusObjectPath> MetaData::getTracklist(QDBusPendingReply<QDBusVariant>TrackList){
     QDBusVariant argumentList=TrackList.value();
     const QDBusArgument &optionsArgument = qvariant_cast<QDBusArgument>(argumentList.variant());
     QList<QDBusObjectPath> _trackList;
@@ -71,7 +91,11 @@ QList<QDBusObjectPath> MetaData::getTracklist(QDBusPendingReply<QDBusVariant>Tra
 
 //*********************************************************
 //Private functions
+//This section is private helper function for decoding
 
+
+//Function decodeArrayType
+//General function for decoding array type and return ao signature
 QList<QDBusObjectPath> MetaData::decodeArrayType(QDBusArgument _optionsArgument,QString &error){
     error="false";
     QList<QDBusObjectPath> data;
@@ -86,7 +110,9 @@ QList<QDBusObjectPath> MetaData::decodeArrayType(QDBusArgument _optionsArgument,
     return data;
 }
 
-
+//Function getMetaData
+//This helper function will return a json formatted string
+//from a QList<QVariantMap>
 QString MetaData::getMetaData(TrackMetadata metaList){
 
     TrackListToJsonString::clearTrackList();
@@ -119,7 +145,9 @@ QString MetaData::getMetaData(TrackMetadata metaList){
     return TrackListToJsonString::getTrackList();
 }
 
-
+//Function decodeMapType
+//This helper function will decode a mapType and return
+//a QMap<QString,QString> coorespond to a a{ss} DBus signature
 Metadata MetaData::decodeMapType(QVariant value, QString &){
 
     const QDBusArgument &optionsArgument = qvariant_cast<QDBusArgument>(value);
@@ -139,6 +167,11 @@ Metadata MetaData::decodeMapType(QVariant value, QString &){
     return _metadata;
 }
 
+
+//Function decodeMapType
+//This helper function is a overload mapType decoder
+//It takes in QDbusvariant and return a QMap<QString,QString>
+//Coorespond to a a{ss}
 Metadata MetaData::decodeMapType(QDBusVariant value, QString &){
 
     Metadata _metadata;

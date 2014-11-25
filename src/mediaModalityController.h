@@ -54,6 +54,8 @@ public slots:
     void playId(QDBusObjectPath);
     void playPause();
     void mix(bool);
+    void repeat(QString);
+    void getAlldata();
 
 private:
     org::mpris::MediaPlayer2::Player *musicPlayer2PlayerProxy;

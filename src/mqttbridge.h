@@ -27,6 +27,7 @@ signals:
     void setPlayPause();
     void setShuffle(bool);
     void setLoop(QString);
+    void getAlldata();
 
 private slots:
     void error(QAbstractSocket::SocketError);

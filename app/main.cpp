@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
     qDebug()<<"Connecting signal next "<< QObject::connect(mqttService,SIGNAL(setNext()),MediaControllerService,SLOT(next()));
     qDebug()<<"Connecting signal volume "<< QObject::connect(mqttService,SIGNAL(setVolume(double)),MediaControllerService,SLOT(setVolume(double)));
     qDebug()<<"Connecting signal mix "<< QObject::connect(mqttService,SIGNAL(setShuffle(bool)),MediaControllerService,SLOT(mix(bool)));
+    qDebug()<<"Connecting signal getAlldata "<< QObject::connect(mqttService,SIGNAL(getAlldata()),MediaControllerService,SLOT(getAlldata()));
+    qDebug()<<"Connecting signal repeat "<< QObject::connect(mqttService,SIGNAL(setLoop(QString)),MediaControllerService,SLOT(repeat(QString)));
 
 
 
