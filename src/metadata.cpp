@@ -24,6 +24,8 @@ Metadata MetaData::getMetadata(QVariant value){
     return _metadata;
 }
 
+
+
 Metadata MetaData::getMetadata(QDBusPendingReply<QDBusVariant> TrackList){
     Metadata _metadata;
     _metadata.clear();
