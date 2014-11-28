@@ -19,7 +19,7 @@ public:
 
 
     explicit TrackListToJsonString(QObject *parent = 0);
-    QString static encodeToJason(QStringList _tracks);
+
     QString static getTrackList();
     static void clearTrackList();
     static void addToTrackList(trackSet);

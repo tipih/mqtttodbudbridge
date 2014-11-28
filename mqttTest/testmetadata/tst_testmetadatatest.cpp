@@ -78,7 +78,43 @@ void TestmetadataTest::testCase1()
 
 QVariant mData;
 
+<<<<<<< HEAD
 //mData = mList;
+=======
+
+    QString key;
+    QVariant value;
+
+    mArg.beginMap(QVariant::Int,QVariant::String);
+    int _key = 1;
+    QString _value = "test2";
+    mArg.beginMapEntry();
+    mArg << _key << _value;
+    mArg.endMapEntry();
+    mArg.endMap();
+
+    qDebug()<<mArg.currentSignature();
+
+
+    QDBusArgument *_Test= new QDBusArgument(mArg);
+    qDebug() <<_Test->currentSignature();
+    qDebug() <<_Test->asVariant();
+
+
+    Metadata _metadata;
+    _metadata.clear();
+
+    mArg.beginMap();
+    while ( !mArg.atEnd() ) {
+        QString key;
+        QVariant value;
+        mArg.beginMapEntry();
+        mArg >> key >> value;
+        _metadata.insert(key,value.toString());
+        mArg.endMapEntry();
+    }
+    mArg.endMap();
+>>>>>>> 8dbb29bdd8c0604b4434c950a5ef207ed3ed8fe3
 
 
 

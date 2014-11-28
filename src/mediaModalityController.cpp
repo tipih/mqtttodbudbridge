@@ -7,6 +7,7 @@
 #include <tracklisttojsonstring.h>
 #include <meta.h>
 #include "metadata.h"
+#include <QDBusMessage>
 
 
 
@@ -23,6 +24,16 @@ MediaModalityController::MediaModalityController(QObject *parent) :
 
     musicPlayer2TracklistProxy = new org::mpris::MediaPlayer2::TrackList("org.mpris.MediaPlayer2.vlc", "/org/mpris/MediaPlayer2",
                                                                          QDBusConnection::sessionBus(), this);
+
+    QDBusConnection bus = QDBusConnection::sessionBus();
+    QDBusInterface dbus_iface("org.freedesktop.DBus", "/org/freedesktop/DBus",
+                              "org.freedesktop.DBus", bus);
+    QList<QVariant> mList;
+    QStringList _list;
+   mList<<  dbus_iface.call("ListNames").arguments().at(0);
+   _list=mList[0].toStringList();
+   qDebug()<<_list.at(0);
+
 
     startTimer(1000);
     qDebug()<<"Signal Track added connected" <<connect(musicPlayer2TracklistProxy,SIGNAL(TrackAdded(QVariantMap,QDBusObjectPath)),this,SLOT(on_TrackAdded(QVariantMap,QDBusObjectPath)));
@@ -146,27 +157,30 @@ void MediaModalityController::on_propertyChange(QString str1, QVariantMap varian
         }
     }
     else if(str1==musicPlayer2TracklistProxy->interface()){
+            getCurrentPlaylist();
+//        //qDebug()<<"property change Variant "<<variant1;
+//        QList<QDBusObjectPath> trackListObjectPath = MediaModalityController::getTracklist();
 
-        //qDebug()<<"property change Variant "<<variant1;
-        QList<QDBusObjectPath> trackListObjectPath = MediaModalityController::getTracklist();
+//        QDBusPendingReply<TrackMetadata> metadatalist = musicPlayer2TracklistProxy->GetTracksMetadata(trackListObjectPath);
+//        metadatalist.waitForFinished();
+//        if (metadatalist.isError()){
+//            // call failed. Show an error condition.
+//            qDebug()<<"Something is wrong";
 
-        QDBusPendingReply<TrackMetadata> metadatalist = musicPlayer2TracklistProxy->GetTracksMetadata(trackListObjectPath);
-        metadatalist.waitForFinished();
-        if (metadatalist.isError()){
-            // call failed. Show an error condition.
-            qDebug()<<"Something is wrong";
-
-        }
-        else
-        {
-            QString _tracklist = MetaData::getTrackSet(metadatalist);
-            emit(setTrackList(_tracklist));
-        }
+//        }
+//        else
+//        {
+//            QString _tracklist = MetaData::getTrackSet(metadatalist);
+//            emit(setTrackList(_tracklist));
+//        }
     }
 }
 
+
+
 void MediaModalityController::getCurrentPlaylist(){
     QList<QDBusObjectPath> trackListObjectPath = MediaModalityController::getTracklist();
+    qDebug()<<"Tracklist "<<trackListObjectPath.count();
     QDBusPendingReply<TrackMetadata> metadatalist = musicPlayer2TracklistProxy->GetTracksMetadata(trackListObjectPath);
     metadatalist.waitForFinished();
     if (metadatalist.isError()){
@@ -261,6 +275,12 @@ void MediaModalityController::mix(bool mixstatus){
 
 }
 
+void MediaModalityController::repeat(QString _repeat){
+    qDebug()<< "Repeat "<<_repeat;
+    musicPlayer2PlayerProxy->setLoopStatus(_repeat);
+
+}
+
 void MediaModalityController::pause(){
     qDebug()<<"Signal dBus service to PAUSE";
     musicPlayer2PlayerProxy->Pause();
@@ -332,4 +352,13 @@ QString MediaModalityController::converPlackbackStatus(QString playbackstatus){
         _playbackstatus="paused";
 
     return _playbackstatus;
+}
+
+//Function getAlldata
+//This function will ask dbus interface for all data
+//This is used if we lost the broaker somehow
+void MediaModalityController::getAlldata(){
+    qDebug()<<" Got a request for all data";
+    getCurrentPlaylist();
+
 }

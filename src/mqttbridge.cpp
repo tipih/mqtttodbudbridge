@@ -22,7 +22,7 @@ connect(client,SIGNAL(received(QMQTT::Message)),this,SLOT(received(QMQTT::Messag
 
 client->setAutoReconnect(true);
 client->setClientId("mqttToDbusBridge");
-client->setKeepAlive(100);
+client->setKeepAlive(1000);
 client->connect();
 
 
@@ -52,6 +52,8 @@ client->subscribe(mediaPlayPauseCommand,0);
 client->subscribe(mediaPlayIdCommand,0);
 client->subscribe(mediaMixCommand,0);
 client->subscribe(mediaRepeatCommand,0);
+
+emit getAlldata();
 }
 
 void MqttBridge::received(const QMQTT::Message &message){
@@ -74,14 +76,13 @@ void MqttBridge::received(const QMQTT::Message &message){
     }
     else if (message.topic()==mediaPlayPauseCommand) emit setPlayPause();
     else if (message.topic()==mediaRepeatCommand){
-
+        if (message.payload()=="0") emit setLoop("None");
+        else emit setLoop("Playlist");
     }
     else if (message.topic()==mediaMixCommand){
      if (message.payload()=="0") emit setShuffle(false);
      else emit setShuffle(true);
     }
-
-
 
 
 
@@ -94,6 +95,7 @@ void MqttBridge::disconnected(){
 }
 
 void MqttBridge::published(QMQTT::Message &message){
+
    // qDebug()<<"Published message "<<message.payload()<<" ID"<<message.id();
 }
 
@@ -146,7 +148,7 @@ void MqttBridge::setTrackId(QString){
 
 void MqttBridge::setTrackList(QString metadatatracklist){
     QMQTT::Message *message = new QMQTT::Message(getMessageId(),mediaLibraryListData,metadatatracklist.toStdString().c_str(),0,true);
-
+        qDebug()<< metadatatracklist;
     client->publish(*message);
 }
 
