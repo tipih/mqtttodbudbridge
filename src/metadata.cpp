@@ -33,14 +33,11 @@ Metadata MetaData::getMetadata(QVariant value){
 }
 
 
-<<<<<<< HEAD
-
-=======
 //Function getMetadata
 //This function will process a reply from the DBus and return the metadata
-//The metadata looks like this QMap<QString,QString> mapping data comming
+//The metadata looks like this QMap<QString,QString> mapping datra comming
 //from DBus
->>>>>>> 8dbb29bdd8c0604b4434c950a5ef207ed3ed8fe3
+
 Metadata MetaData::getMetadata(QDBusPendingReply<QDBusVariant> TrackList){
     Metadata _metadata;
     _metadata.clear();

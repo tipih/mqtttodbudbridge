@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist xmlns="http://xspf.org/ns/0/" xmlns:vlc="http://www.videolan.org/vlc/playlist/ns/0/" version="1">
+	<title>Playlist</title>
+	<trackList>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/01%20Follow%20Through.mp3</location>
+			<title>Follow Through</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>1</trackNum>
+			<annotation>                            </annotation>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>239830</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>0</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/02%20Chariot.mp3</location>
+			<title>Chariot</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>2</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>239255</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>1</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/03%20Just%20Friends.mp3</location>
+			<title>Just Friends</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>3</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>205165</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>2</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/05%20Chemical%20Party.mp3</location>
+			<title>Chemical Party</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>5</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>181890</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>3</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/06%20Belief.mp3</location>
+			<title>Belief</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>6</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>267180</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>4</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/07%20Crush.mp3</location>
+			<title>Crush</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>7</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>205975</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>5</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/08%20I%20Don&#39;t%20Want%20To%20Be.mp3</location>
+			<title>I Don&#39;t Want To Be</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>8</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>217835</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>6</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/09%20Meaning.mp3</location>
+			<title>Meaning</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>9</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>215327</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>7</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/10%20More%20Than%20Anyone.mp3</location>
+			<title>More Than Anyone</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>10</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>178076</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>8</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/11%20Over-Rated.mp3</location>
+			<title>Over-Rated</title>
+			<creator>Gavin DeGraw</creator>
+			<album>Chariot (Stripped)</album>
+			<trackNum>11</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Gavin%20DeGraw/Chariot%20%28Stripped%29/art.jpg</image>
+			<duration>251794</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>9</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/Bruce%20Springsteen%20-%2009%20-%20Badlands.mp3</location>
+			<title>Badlands</title>
+			<creator>Bruce Springsteen</creator>
+			<album>The Essential Bonus CD1</album>
+			<trackNum>9</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Bruce%20Springsteen/The%20Essential%20Bonus%20CD1/art.jpg</image>
+			<duration>244840</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>10</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/Bruce%20Springsteen%20-%2010%20-%20Darkness%20on%20the%20edge%20of%20town.mp3</location>
+			<title>Darkness on the edge of town</title>
+			<creator>Bruce Springsteen</creator>
+			<album>The Essential Bonus CD1</album>
+			<trackNum>10</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Bruce%20Springsteen/The%20Essential%20Bonus%20CD1/art.jpg</image>
+			<duration>271091</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>11</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/Bruce%20Springsteen%20-%2011%20-%20The%20Promised%20Land.mp3</location>
+			<title>The Promised Land</title>
+			<creator>Bruce Springsteen</creator>
+			<album>The Essential Bonus CD1</album>
+			<trackNum>11</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Bruce%20Springsteen/The%20Essential%20Bonus%20CD1/art.jpg</image>
+			<duration>271275</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>12</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/Bruce%20Springsteen%20-%2012%20-%20The%20River.mp3</location>
+			<title>The River</title>
+			<creator>Bruce Springsteen</creator>
+			<album>The Essential Bonus CD1</album>
+			<trackNum>12</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Bruce%20Springsteen/The%20Essential%20Bonus%20CD1/art.jpg</image>
+			<duration>300820</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>13</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/Bruce%20Springsteen%20-%2013%20-%20Hungry%20Heart.mp3</location>
+			<title>Hungry Heart</title>
+			<creator>Bruce Springsteen</creator>
+			<album>The Essential Bonus CD1</album>
+			<trackNum>13</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Bruce%20Springsteen/The%20Essential%20Bonus%20CD1/art.jpg</image>
+			<duration>200641</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>14</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/Bruce%20Springsteen%20-%2014%20-%20Nebraska.mp3</location>
+			<title>Nebraska</title>
+			<creator>Bruce Springsteen</creator>
+			<album>The Essential Bonus CD1</album>
+			<trackNum>14</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Bruce%20Springsteen/The%20Essential%20Bonus%20CD1/art.jpg</image>
+			<duration>269521</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>15</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/Bruce%20Springsteen%20-%2015%20-%20Atlantic%20City.mp3</location>
+			<title>Atlantic City</title>
+			<creator>Bruce Springsteen</creator>
+			<album>The Essential Bonus CD1</album>
+			<trackNum>15</trackNum>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Bruce%20Springsteen/The%20Essential%20Bonus%20CD1/art.jpg</image>
+			<duration>236714</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>16</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/homeless.mp3</location>
+			<title>homeless</title>
+			<creator>Timmy collection</creator>
+			<album>Album 1</album>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Timmy%20collection/Album%201/art.png</image>
+			<duration>380580</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>17</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/It&#39;s%20My%20Life_Bon%20Jovi.mp3</location>
+			<title>It&#39;s My Life</title>
+			<creator>Bon Jovi</creator>
+			<album>Crush [Bonus Tracks]</album>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Bon%20Jovi/Crush%20%5BBonus%20Tracks%5D/art.jpg</image>
+			<duration>223050</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>18</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/M83%20-%20I%20Need%20You%20(Divergent%20Soundtrack).mp3</location>
+			<title>Go home</title>
+			<creator>Timmy collection</creator>
+			<album>Album 1</album>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Timmy%20collection/Album%201/art.png</image>
+			<duration>180166</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>19</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/restless.mp3</location>
+			<title>restless</title>
+			<creator>Timmy collection</creator>
+			<album>Album 1</album>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Timmy%20collection/Album%201/art.png</image>
+			<duration>206393</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>20</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///home/michael/Desktop/working%20audio/rugaciune_raspuns%20(studio%20versiune).mp3</location>
+			<title>rugaciune/raspuns (studio versiune)</title>
+			<creator>Timmy collection</creator>
+			<album>Album 1</album>
+			<image>file:///home/michael/.cache/vlc/art/artistalbum/Timmy%20collection/Album%201/art.png</image>
+			<duration>281940</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>21</vlc:id>
+			</extension>
+		</track>
+	</trackList>
+	<extension application="http://www.videolan.org/vlc/playlist/0">
+			<vlc:item tid="0"/>
+			<vlc:item tid="1"/>
+			<vlc:item tid="2"/>
+			<vlc:item tid="3"/>
+			<vlc:item tid="4"/>
+			<vlc:item tid="5"/>
+			<vlc:item tid="6"/>
+			<vlc:item tid="7"/>
+			<vlc:item tid="8"/>
+			<vlc:item tid="9"/>
+			<vlc:item tid="10"/>
+			<vlc:item tid="11"/>
+			<vlc:item tid="12"/>
+			<vlc:item tid="13"/>
+			<vlc:item tid="14"/>
+			<vlc:item tid="15"/>
+			<vlc:item tid="16"/>
+			<vlc:item tid="17"/>
+			<vlc:item tid="18"/>
+			<vlc:item tid="19"/>
+			<vlc:item tid="20"/>
+			<vlc:item tid="21"/>
+	</extension>
+</playlist>

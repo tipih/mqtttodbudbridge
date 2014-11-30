@@ -89,6 +89,7 @@ void MediaModalityController::timerEvent(QTimerEvent *event)
         if(isSet==true)
             qDebug()<<"DBus Connection to mpris ok";
 
+        emit(setError("True"));
         isSet=false;
         QDBusPendingReply<QDBusVariant> position = musicPlayer2property->Get(musicPlayer2PlayerProxy->interface(),"Position");
         position.waitForFinished();
@@ -108,7 +109,7 @@ void MediaModalityController::timerEvent(QTimerEvent *event)
     else
     {
 
-        emit(setError("Not connected to media player")); //Send error signal to client
+        emit(setError("False")); //Send error signal to client
         if(isSet==false)
             qDebug()<<"DBus connection to mpris NOT ok";
         isSet=true;

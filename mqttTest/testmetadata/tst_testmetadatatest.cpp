@@ -5,6 +5,17 @@
 #include <QMetaType>
 #include <QDBusArgument>
 #include <QDBusMetaType>
+#include <mpreis_interface.h>
+#include "mediaModalityController.h"
+#include <QProcess>
+#include <QObject>
+#include <QtDBus/QDBusInterface>
+#include <QtCore/QFile>
+#include <stdio.h>
+#include <mpreis_interface.h>
+#include <QList>
+#include "meta.h"
+#include "mqttbridge.h"
 
 
 
@@ -20,39 +31,16 @@ public:
 
 
 
-
+private:
+    org::mpris::MediaPlayer2::Player *musicPlayer2PlayerProxy;
+    org::mpris::MediaPlayer2::TrackList *musicPlayer2TracklistProxy;
+    org::freedesktop::DBus::Properties *musicPlayer2property;
+    MediaModalityController* MediaControllerService;
 
 private Q_SLOTS:
     void testCase1();
 };
 
-QDBusArgument& marshal(QDBusArgument &argument, const Metadata &mList)
-{
-    argument.beginMap(QVariant::String,QVariant::String);
-
-    QMap<QString, QString>::const_iterator i = mList.constBegin();
-
-    QString key;
-    QVariant value;
-
-    while (i != mList.constEnd()) {
-        {
-            qDebug() << i.key() << ": " << i.value() << endl;
-
-            key = i.key();
-            value = i.value();
-            argument.beginMapEntry();
-            argument << i.key() << "value";
-            argument.endMapEntry();
-            i++;
-        }
-
-
-    }
-    argument.endMap();
-    qDebug()<<argument.currentType();
-    return argument;
-}
 
 
 
@@ -62,68 +50,66 @@ QDBusArgument& marshal(QDBusArgument &argument, const Metadata &mList)
 TestmetadataTest::TestmetadataTest()
 {
     qDBusRegisterMetaType<Metadata>();
+
+    qDBusRegisterMetaType<TrackMetadata>();
+    qDebug()<<"In init";
+
+    qDBusRegisterMetaType<TrackMetadata>();
+    musicPlayer2PlayerProxy = new org::mpris::MediaPlayer2::Player("org.mpris.MediaPlayer2.vlc", "/org/mpris/MediaPlayer2",
+                                                                   QDBusConnection::sessionBus(), this);
+
+    musicPlayer2property = new org::freedesktop::DBus::Properties("org.mpris.MediaPlayer2.vlc", "/org/mpris/MediaPlayer2",
+                                                                  QDBusConnection::sessionBus(), this);
+
+    musicPlayer2TracklistProxy = new org::mpris::MediaPlayer2::TrackList("org.mpris.MediaPlayer2.vlc", "/org/mpris/MediaPlayer2",
+                                                                         QDBusConnection::sessionBus(), this);
+
+
+
+
 }
+
+
 
 void TestmetadataTest::testCase1()
 {
-    Metadata mList;
-    mList["1"] = "Test 1" ;
-    mList["2"] = "Test 2" ;
-    mList["3"] = "Test 3" ;
-    mList["4"] = "Test 4" ;
-    mList["5"] = "Test 5" ;
-    mList["6"] = "Test 6" ;
-    mList["7"] = "Test 7" ;
-    mList["8"] = "Test 8" ;
+    //As it is not really possible to create a QDbusQrgument.
+    //We test using the Vlc player. We are going to start the Vlc player
+    //using a known playlist.
 
-QVariant mData;
-
-<<<<<<< HEAD
-//mData = mList;
-=======
-
-    QString key;
-    QVariant value;
-
-    mArg.beginMap(QVariant::Int,QVariant::String);
-    int _key = 1;
-    QString _value = "test2";
-    mArg.beginMapEntry();
-    mArg << _key << _value;
-    mArg.endMapEntry();
-    mArg.endMap();
-
-    qDebug()<<mArg.currentSignature();
+    QDBusConnection bus = QDBusConnection::sessionBus();
+    QDBusInterface dbus_iface("org.freedesktop.DBus", "/org/freedesktop/DBus",
+                              "org.freedesktop.DBus", bus);
 
 
-    QDBusArgument *_Test= new QDBusArgument(mArg);
-    qDebug() <<_Test->currentSignature();
-    qDebug() <<_Test->asVariant();
+    MediaModalityController a;
 
 
-    Metadata _metadata;
-    _metadata.clear();
+    QProcess process;
+    qDebug()<<"Starting VlC";
+    process.start("vlc Musicplaylist.xspf");
 
-    mArg.beginMap();
-    while ( !mArg.atEnd() ) {
-        QString key;
-        QVariant value;
-        mArg.beginMapEntry();
-        mArg >> key >> value;
-        _metadata.insert(key,value.toString());
-        mArg.endMapEntry();
-    }
-    mArg.endMap();
->>>>>>> 8dbb29bdd8c0604b4434c950a5ef207ed3ed8fe3
+    QTest::qWait(1000);
 
 
+    QVERIFY2(musicPlayer2PlayerProxy->isValid(), "Failure");
+    QVERIFY2(musicPlayer2property->isValid(), "Failure");
+    QVERIFY2(musicPlayer2TracklistProxy->isValid(), "Failure");
 
-    QVERIFY2(true, "Failure");
+    QList<QDBusObjectPath> _trackList;
+
+    QMetaObject::invokeMethod(&a, "getTracklist",Q_RETURN_ARG(QList<QDBusObjectPath>, _trackList));
+
+    qDebug()<<"Tracklist "<<_trackList.count();
+   // QList<QDBusObjectPath> trackListObjectPath = MediaModalityController.getTracklist();
+   // qDebug()<<trackListObjectPath.count();
+    QTest::qWait(500);
+    process.terminate();
 }
 
 
 
+QTEST_MAIN(TestmetadataTest)
 
-QTEST_APPLESS_MAIN(TestmetadataTest)
 
 #include "tst_testmetadatatest.moc"

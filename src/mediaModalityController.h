@@ -63,7 +63,7 @@ private:
     org::freedesktop::DBus::Properties *musicPlayer2property;
     void timerEvent(QTimerEvent *event);
 
-    QList<QDBusObjectPath> getTracklist();
+    Q_INVOKABLE QList<QDBusObjectPath> getTracklist();
     void sendMetadataUpdate(Metadata);
     void getCurrentPlaylist();
     QString convertTrackLenght(QString);    //converting to milisec

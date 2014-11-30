@@ -38,7 +38,8 @@ INCLUDEPATH += $$PWD/libraries
 DEPENDPATH += $$PWD/libraries
 
 OTHER_FILES += \
-    mpreis.xml
+    mpreis.xml \
+    Musicplaylist.xspf
 
 unix:!symbian {
     maemo5 {
